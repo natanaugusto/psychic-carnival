@@ -28,9 +28,9 @@ services:
     build:
       context: ./php-fpm
       args:
-        - http_proxy
-        - https_proxy
-        - no_proxy
+        INSTALL_COMPOSER: '${PHP_FPM_INSTALL_COMPOSER:-true}'
+        INSTALL_XDEBUG: '${PHP_FPM_INSTALL_XDEBUG:-false}'
+        INSTALL_NODE: '${PHP_FPM_INSTALL_NODE:-true}'
     volumes:
       - ${APP_CODE_PATH_HOST:-../}:${APP_CODE_PATH_CONTAINER:-/var/www}
     ports:
