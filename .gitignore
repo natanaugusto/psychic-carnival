@@ -1,4 +1,4 @@
-nginx/config.d/*.conf
+nginx/conf.d/*.conf
 docker-compose.yml
 logs/
 .env
