@@ -18,6 +18,7 @@ RUN apk add --no-cache --update $PHPIZE_DEPS \
     zlib-dev \
     imap-dev \
     icu-dev \
+    shadow \
     bash \
     g++
 
@@ -38,22 +39,25 @@ RUN pecl install -f redis && docker-php-ext-enable redis
 RUN pecl install -f pcov && docker-php-ext-enable pcov
 
 ARG INSTALL_COMPOSER=false
-ENV INSTALL_COMPOSER $INSTALL_COMPOSER
 RUN if [ $INSTALL_COMPOSER = true ]; then \
     php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer \
 ;fi
 
 ARG INSTALL_XDEBUG=false
-ENV INSTALL_XDEBUG $INSTALL_XDEBUG
 RUN if [ $INSTALL_XDEBUG = true ]; then \
     pecl install -f xdebug && docker-php-ext-enable xdebug \
 ;fi
 
 ARG INSTALL_NODE=false
-ENV INSTALL_NODE $INSTALL_NODE
 RUN if [ $INSTALL_NODE = true ]; then \
     apk add --no-cache --update nodejs npm \
 ;fi
+
+ARG WWWGROUP=1000
+ARG WWWUSER=1000
+RUN groupmod -g $WWWGROUP www-data \
+    && usermod -u $WWWUSER www-data \
+    && chown www-data:www-data -R /var/www
 
 CMD ["php-fpm"]
 

@@ -31,6 +31,9 @@ services:
         INSTALL_COMPOSER: '${PHP_FPM_INSTALL_COMPOSER:-true}'
         INSTALL_XDEBUG: '${PHP_FPM_INSTALL_XDEBUG:-false}'
         INSTALL_NODE: '${PHP_FPM_INSTALL_NODE:-true}'
+    environment:
+      WWWGROUP: 1000
+      WWWUSER: 1000
     volumes:
       - ${APP_CODE_PATH_HOST:-../}:${APP_CODE_PATH_CONTAINER:-/var/www}
     ports:
